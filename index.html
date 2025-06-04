@@ -152,6 +152,12 @@
       img, video {
         max-height: 35vh;
       }
+      
+      /* Мобильная адаптация для контейнера с картинками */
+      div[style*="display: flex"] {
+        flex-direction: column !important;
+        gap: 15px !important;
+      }
     }
     
     @media screen and (max-width: 480px) {
@@ -327,7 +333,17 @@
     </svg>
     Telegram канал
   </a>
-  <img src="belka.jpg" alt="belka" />
+  <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center;">
+    <img src="belka.jpg" alt="belka" />
+    <img src="stat.png" alt="Player Statistics" style="
+      max-width: 90%;
+      max-height: 40vh;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    " />
+  </div>
   
   <!-- Мини-игра "Хоккейные броски" -->
   <div id="gameContainer" style="display: none;">

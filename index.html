@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>elitesquirrels.ru</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>elitesquirrels.ru</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: white; /* Белый фон */
+      gap: 20px;
+    }
+    img {
+      max-width: 90%;
+      max-height: 40vh;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    video {
+      max-width: 90%;
+      max-height: 40vh;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
 </head>
 <body>
-    <img src="belka.jpg" alt="belka">
+  <img src="belka.jpg" alt="belka" />
+  <video controls>
+    <source src="vyst.mp4" type="video/mp4" />
+    Ваш браузер не поддерживает просмотр видео.
+  </video>
 </body>
 </html>

@@ -172,16 +172,52 @@
   </a>
   <img src="belka.jpg" alt="belka" />
   <video 
+    id="mainVideo"
     playsinline
     webkit-playsinline
     controls
-    preload="metadata"
+    preload="auto"
     muted
-    poster="">
-    <source src="vyst.mp4" type="video/mp4; codecs=avc1.42E01E,mp4a.40.2" />
+    x-webkit-airplay="allow"
+    webkit-playsinline="true">
     <source src="vyst.mp4" type="video/mp4" />
-    <source src="vyst.webm" type="video/webm" />
     Ваш браузер не поддерживает просмотр видео.
   </video>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.getElementById('mainVideo');
+      
+      // Принудительная загрузка для Safari
+      video.load();
+      
+      // Обработка ошибок
+      video.addEventListener('error', function(e) {
+        console.log('Video error:', e);
+        console.log('Video error code:', video.error ? video.error.code : 'unknown');
+      });
+      
+      // Попытка загрузить метаданные
+      video.addEventListener('loadedmetadata', function() {
+        console.log('Video metadata loaded');
+      });
+      
+      // Дополнительная попытка загрузки через 1 секунду
+      setTimeout(function() {
+        if (video.readyState === 0) {
+          video.load();
+        }
+      }, 1000);
+      
+      // Для iOS Safari - попытка воспроизведения при первом касании
+      document.addEventListener('touchstart', function() {
+        if (video.paused) {
+          video.play().catch(function(error) {
+            console.log('Play error:', error);
+          });
+        }
+      }, { once: true });
+    });
+  </script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -34,10 +35,41 @@
       max-width: 400px;
       height: auto;
     }
+    .telegram-link {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0088cc;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+    }
+    .telegram-link:hover {
+      background: #006ba6;
+    }
+    .telegram-icon {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
   </style>
 </head>
 <body>
   <img class="top-left" src="top-left-image.png" alt="Top Left Image" />
+  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="telegram-link" target="_blank">
+    <svg class="telegram-icon" viewBox="0 0 24 24">
+      <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 2.1 11.75c-1.21-.35-1.23-1.18.26-1.75l21.26-8.2c.97-.43 1.9.24 1.48 1.75L21.3 21.75c-.18.97-.78 1.22-1.57.75L14.26 19l-2.74 2.64c-.29.32-.53.15-.53-.34z"/>
+    </svg>
+    Telegram канал
+  </a>
   <img src="belka.jpg" alt="belka" />
   <video playsinline
   webkit-playsinline

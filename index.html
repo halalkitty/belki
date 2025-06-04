@@ -1,42 +1,66 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>elitesquirrels.ru</title>
   <style>
+    * {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
     body {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
       background-color: white; 
       gap: 20px;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
     }
+    
     img {
       max-width: 90%;
       max-height: 40vh;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
     }
+    
     video {
       max-width: 90%;
       max-height: 40vh;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
     }
+    
     .top-left {
-      position: absolute;
+      position: fixed;
       top: 10px;
       left: 10px;
-      width: 30vw;
-      min-width: 120px;
-      max-width: 400px;
+      width: 25vw;
+      min-width: 80px;
+      max-width: 200px;
       height: auto;
+      z-index: 1000;
     }
+    
     .telegram-link {
-      position: absolute;
+      position: fixed;
       bottom: 20px;
       left: 20px;
       display: flex;
@@ -44,21 +68,97 @@
       gap: 8px;
       background: #0088cc;
       color: white;
-      padding: 10px 15px;
+      padding: 12px 16px;
       border-radius: 25px;
       text-decoration: none;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
       font-size: 14px;
+      font-weight: 500;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s;
+      transition: background-color 0.3s ease;
+      z-index: 1000;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
     }
-    .telegram-link:hover {
+    
+    .telegram-link:hover,
+    .telegram-link:active {
       background: #006ba6;
     }
+    
     .telegram-icon {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       fill: white;
+      flex-shrink: 0;
+    }
+    
+    /* iOS Safari specific optimizations */
+    @supports (-webkit-appearance: none) {
+      body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
+      
+      .top-left {
+        top: calc(10px + env(safe-area-inset-top));
+        left: calc(10px + env(safe-area-inset-left));
+      }
+      
+      .telegram-link {
+        bottom: calc(20px + env(safe-area-inset-bottom));
+        left: calc(20px + env(safe-area-inset-left));
+      }
+    }
+    
+    /* Media queries for better responsive design */
+    @media screen and (max-width: 768px) {
+      body {
+        gap: 15px;
+        padding: 15px;
+      }
+      
+      .top-left {
+        width: 20vw;
+        min-width: 60px;
+        max-width: 150px;
+      }
+      
+      .telegram-link {
+        font-size: 12px;
+        padding: 10px 14px;
+      }
+      
+      .telegram-icon {
+        width: 16px;
+        height: 16px;
+      }
+      
+      img, video {
+        max-height: 35vh;
+      }
+    }
+    
+    @media screen and (max-width: 480px) {
+      .top-left {
+        width: 18vw;
+        min-width: 50px;
+        max-width: 120px;
+      }
+      
+      .telegram-link {
+        font-size: 11px;
+        padding: 8px 12px;
+        gap: 6px;
+      }
+      
+      .telegram-icon {
+        width: 14px;
+        height: 14px;
+      }
     }
   </style>
 </head>

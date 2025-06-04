@@ -172,6 +172,151 @@
         height: 14px;
       }
     }
+    
+    /* Стили для мини-игры */
+    #gameContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    #gameArea {
+      position: relative;
+      width: 400px;
+      height: 200px;
+      background: linear-gradient(90deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
+      border: 3px solid #333;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    
+    #puck {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #1a1a1a;
+      border-radius: 50%;
+      bottom: 20px;
+      left: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid #333;
+    }
+    
+    #goal {
+      position: absolute;
+      width: 60px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 3px solid #ff0000;
+      border-bottom: none;
+      right: 10px;
+      bottom: 80px;
+      border-radius: 10px 10px 0 0;
+    }
+    
+    #goal::after {
+      content: '🥅';
+      font-size: 24px;
+      position: absolute;
+      top: 5px;
+      left: 18px;
+    }
+    
+    #player {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: 15px;
+      left: 15px;
+      font-size: 24px;
+    }
+    
+    #player::after {
+      content: '🐿️';
+    }
+    
+    #gameUI {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    #gameUI button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    #startBtn {
+      background: #4CAF50;
+      color: white;
+    }
+    
+    #startBtn:hover {
+      background: #45a049;
+    }
+    
+    #closeBtn {
+      background: #f44336;
+      color: white;
+    }
+    
+    #closeBtn:hover {
+      background: #da190b;
+    }
+    
+    .puck-moving {
+      animation: puckShot 1s ease-out forwards;
+    }
+    
+    @keyframes puckShot {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+      100% {
+        transform: translate(320px, -50px) scale(0.8);
+      }
+    }
+    
+    .goal-animation {
+      animation: goalCelebration 0.5s ease-in-out;
+    }
+    
+    @keyframes goalCelebration {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); background: #ffff00; }
+    }
+    
+    @media screen and (max-width: 480px) {
+      #gameArea {
+        width: 90vw;
+        height: 180px;
+      }
+      
+      #gameUI {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -183,6 +328,39 @@
     Telegram канал
   </a>
   <img src="belka.jpg" alt="belka" />
+  
+  <!-- Мини-игра "Хоккейные броски" -->
+  <div id="gameContainer" style="display: none;">
+    <h2 style="text-align: center; font-family: Arial, sans-serif; color: #333;">🏒 Хоккейные броски белок 🐿️</h2>
+    <div id="gameArea">
+      <div id="puck"></div>
+      <div id="goal"></div>
+      <div id="player"></div>
+    </div>
+    <div id="gameUI">
+      <div id="score">Счет: 0</div>
+      <div id="timer">Время: 30</div>
+      <button id="startBtn">Начать игру</button>
+      <button id="closeBtn">Закрыть игру</button>
+    </div>
+  </div>
+  
+  <button id="playGameBtn" style="
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    font-family: Arial, sans-serif;
+  " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+    🎮 Играть в мини-игру
+  </button>
+
   <video 
     id="mainVideo"
     playsinline
@@ -230,6 +408,165 @@
         }
       }, { once: true });
     });
+    
+    // Мини-игра "Хоккейные броски белок"
+    let gameState = {
+      score: 0,
+      timeLeft: 30,
+      gameActive: false,
+      gameTimer: null
+    };
+    
+    const gameContainer = document.getElementById('gameContainer');
+    const playGameBtn = document.getElementById('playGameBtn');
+    const startBtn = document.getElementById('startBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const puck = document.getElementById('puck');
+    const goal = document.getElementById('goal');
+    const scoreDisplay = document.getElementById('score');
+    const timerDisplay = document.getElementById('timer');
+    
+    // Открыть игру
+    playGameBtn.addEventListener('click', function() {
+      gameContainer.style.display = 'flex';
+    });
+    
+    // Закрыть игру
+    closeBtn.addEventListener('click', function() {
+      gameContainer.style.display = 'none';
+      endGame();
+    });
+    
+    // Начать игру
+    startBtn.addEventListener('click', function() {
+      if (!gameState.gameActive) {
+        startGame();
+      }
+    });
+    
+    // Бросок шайбы
+    puck.addEventListener('click', function() {
+      if (gameState.gameActive && !puck.classList.contains('puck-moving')) {
+        shootPuck();
+      }
+    });
+    
+    function startGame() {
+      gameState.score = 0;
+      gameState.timeLeft = 30;
+      gameState.gameActive = true;
+      
+      updateDisplay();
+      startBtn.textContent = 'Игра идет...';
+      startBtn.disabled = true;
+      
+      // Таймер игры
+      gameState.gameTimer = setInterval(function() {
+        gameState.timeLeft--;
+        updateDisplay();
+        
+        if (gameState.timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+      
+      resetPuck();
+    }
+    
+    function endGame() {
+      gameState.gameActive = false;
+      clearInterval(gameState.gameTimer);
+      startBtn.textContent = 'Начать игру';
+      startBtn.disabled = false;
+      
+      if (gameState.score > 0) {
+        setTimeout(() => {
+          alert(`🎉 Игра окончена! Ваш счет: ${gameState.score} голов!\n${getScoreMessage(gameState.score)}`);
+        }, 100);
+      }
+    }
+    
+    function shootPuck() {
+      puck.classList.add('puck-moving');
+      
+      // Случайность попадания (70% шанс)
+      const hit = Math.random() < 0.7;
+      
+      setTimeout(() => {
+        if (hit) {
+          // Гол!
+          gameState.score++;
+          goal.classList.add('goal-animation');
+          updateDisplay();
+          
+          // Показать эффект гола
+          showGoalEffect();
+          
+          setTimeout(() => {
+            goal.classList.remove('goal-animation');
+          }, 500);
+        }
+        
+        // Вернуть шайбу обратно
+        setTimeout(() => {
+          resetPuck();
+        }, 200);
+        
+      }, 300);
+    }
+    
+    function resetPuck() {
+      puck.classList.remove('puck-moving');
+      puck.style.left = (Math.random() * 100 + 20) + 'px';
+      puck.style.bottom = (Math.random() * 30 + 15) + 'px';
+    }
+    
+    function updateDisplay() {
+      scoreDisplay.textContent = `Счет: ${gameState.score}`;
+      timerDisplay.textContent = `Время: ${gameState.timeLeft}`;
+    }
+    
+    function showGoalEffect() {
+      const effect = document.createElement('div');
+      effect.textContent = '⚡ ГОЛ! ⚡';
+      effect.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #ffff00;
+        font-size: 24px;
+        font-weight: bold;
+        z-index: 1000;
+        animation: goalText 1s ease-out forwards;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      `;
+      
+      // Добавляем CSS анимацию
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes goalText {
+          0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+          100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      document.getElementById('gameArea').appendChild(effect);
+      
+      setTimeout(() => {
+        effect.remove();
+      }, 1000);
+    }
+    
+    function getScoreMessage(score) {
+      if (score >= 15) return "🏆 Невероятно! Вы настоящий снайпер!";
+      if (score >= 10) return "🥇 Отлично! Отличная игра!";
+      if (score >= 5) return "🥈 Хорошо! Неплохой результат!";
+      if (score >= 1) return "🥉 Неплохо! Есть куда расти!";
+      return "😅 Не расстраивайтесь, попробуйте еще раз!";
+    }
   </script>
 </body>
 </html>

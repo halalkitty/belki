@@ -39,6 +39,7 @@
       box-sizing: border-box;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
+      position: relative;
     }
     
     img {
@@ -106,6 +107,61 @@
       flex-shrink: 0;
     }
     
+    /* Стили для кнопок */
+    .game-button {
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+      font-family: Arial, sans-serif;
+    }
+    
+    .contract-button {
+      background: linear-gradient(45deg, #228B22, #32CD32);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+      font-family: Arial, sans-serif;
+    }
+    
+    .game-button:hover,
+    .contract-button:hover {
+      transform: scale(1.05);
+    }
+    
+    /* Эффект падающих долларов */
+    .dollar {
+      position: fixed;
+      font-size: 30px;
+      color: #228B22;
+      pointer-events: none;
+      z-index: 1500;
+      animation: fallDown 3s linear forwards;
+    }
+    
+    @keyframes fallDown {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
     /* iOS Safari specific optimizations */
     @supports (-webkit-appearance: none) {
       body {
@@ -153,6 +209,12 @@
         max-height: 35vh;
       }
       
+      .game-button,
+      .contract-button {
+        font-size: 14px;
+        padding: 12px 24px;
+      }
+      
       /* Мобильная адаптация для контейнера с картинками */
       div[style*="display: flex"] {
         flex-direction: column !important;
@@ -176,6 +238,12 @@
       .telegram-icon {
         width: 14px;
         height: 14px;
+      }
+      
+      .game-button,
+      .contract-button {
+        font-size: 12px;
+        padding: 10px 20px;
       }
     }
     
@@ -361,21 +429,16 @@
     </div>
   </div>
   
-  <button id="playGameBtn" style="
-    background: linear-gradient(45deg, #ff6b35, #f7931e);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.2s;
-    font-family: Arial, sans-serif;
-  " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-    🎮 Играть в мини-игру
-  </button>
+  <!-- Кнопки -->
+  <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+    <button id="playGameBtn" class="game-button">
+      🎮 Играть в мини-игру
+    </button>
+    
+    <button id="contractBtn" class="contract-button">
+      💰 Подписать контракт на 65 млн
+    </button>
+  </div>
 
   <video 
     id="mainVideo"
@@ -423,6 +486,45 @@
           });
         }
       }, { once: true });
+    });
+    
+    // Функция создания падающих долларов
+    function createFallingDollars() {
+      const dollarSymbols = ['💵', '💸', '💰', '🤑'];
+      const numberOfDollars = 30;
+      
+      for (let i = 0; i < numberOfDollars; i++) {
+        setTimeout(() => {
+          const dollar = document.createElement('div');
+          dollar.className = 'dollar';
+          dollar.textContent = dollarSymbols[Math.floor(Math.random() * dollarSymbols.length)];
+          
+          // Случайная позиция по горизонтали
+          dollar.style.left = Math.random() * window.innerWidth + 'px';
+          
+          // Случайная задержка анимации
+          dollar.style.animationDelay = Math.random() * 0.5 + 's';
+          
+          document.body.appendChild(dollar);
+          
+          // Удаляем элемент после анимации
+          setTimeout(() => {
+            if (dollar.parentNode) {
+              dollar.parentNode.removeChild(dollar);
+            }
+          }, 3500);
+        }, i * 100);
+      }
+    }
+    
+    // Обработчик кнопки контракта
+    document.getElementById('contractBtn').addEventListener('click', function() {
+      createFallingDollars();
+      
+      // Показываем сообщение через небольшую задержку
+      setTimeout(() => {
+        alert('🎉 Поздравляем! Контракт на 65 миллионов долларов подписан! 💰\nДобро пожаловать в команду Elite Squirrels! 🐿️🏒');
+      }, 500);
     });
     
     // Мини-игра "Хоккейные броски белок"

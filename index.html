@@ -50,99 +50,6 @@
       transform: translateZ(0);
     }
     
-    /* Стили для увеличиваемых изображений */
-    .zoomable-image {
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border-radius: 8px;
-    }
-    
-    .zoomable-image:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Модальное окно для увеличенного просмотра */
-    .image-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 3000;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    
-    .modal-content {
-      position: relative;
-      max-width: 95%;
-      max-height: 95%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .modal-image {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-    }
-    
-    .modal-close {
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      width: 40px;
-      height: 40px;
-      background: #ff4444;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      font-size: 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s ease;
-      z-index: 3001;
-    }
-    
-    .modal-close:hover {
-      background: #cc0000;
-    }
-    
-    /* Индикатор увеличения */
-    .zoom-indicator {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 15px;
-      font-size: 12px;
-      font-family: Arial, sans-serif;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-    
-    .image-container {
-      position: relative;
-      display: inline-block;
-    }
-    
-    .image-container:hover .zoom-indicator {
-      opacity: 1;
-    }
-    
     video {
       max-width: 90%;
       max-height: 40vh;
@@ -250,14 +157,6 @@
       div[style*="display: flex"] {
         flex-direction: column !important;
         gap: 15px !important;
-      }
-      
-      .modal-close {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-        top: -15px;
-        right: -15px;
       }
     }
     
@@ -435,29 +334,15 @@
     Telegram канал
   </a>
   <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center;">
-    <div class="image-container">
-      <img src="belka.jpg" alt="belka" class="zoomable-image" data-zoom="belka.jpg" />
-      <div class="zoom-indicator">🔍 Нажмите для увеличения</div>
-    </div>
-    <div class="image-container">
-      <img src="stat.png" alt="Player Statistics" class="zoomable-image" data-zoom="stat.png" style="
-        max-width: 90%;
-        max-height: 40vh;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        transform: translateZ(0);
-      " />
-      <div class="zoom-indicator">🔍 Нажмите для увеличения</div>
-    </div>
-  </div>
-  
-  <!-- Модальное окно для увеличенного просмотра изображений -->
-  <div id="imageModal" class="image-modal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeImageModal()">×</button>
-      <img id="modalImage" class="modal-image" src="" alt="Увеличенное изображение" />
-    </div>
+    <img src="belka.jpg" alt="belka" />
+    <img src="stat.png" alt="Player Statistics" style="
+      max-width: 90%;
+      max-height: 40vh;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    " />
   </div>
   
   <!-- Мини-игра "Хоккейные броски" -->
@@ -539,45 +424,6 @@
         }
       }, { once: true });
     });
-    
-    // Функционал увеличения изображений
-    function initImageZoom() {
-      const zoomableImages = document.querySelectorAll('.zoomable-image');
-      const modal = document.getElementById('imageModal');
-      const modalImage = document.getElementById('modalImage');
-      
-      zoomableImages.forEach(img => {
-        img.addEventListener('click', function() {
-          const imageSrc = this.getAttribute('data-zoom') || this.src;
-          modalImage.src = imageSrc;
-          modal.style.display = 'flex';
-          document.body.style.overflow = 'hidden'; // Предотвращаем скролл фона
-        });
-      });
-      
-      // Закрытие по клику на фон
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          closeImageModal();
-        }
-      });
-      
-      // Закрытие по ESC
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-          closeImageModal();
-        }
-      });
-    }
-    
-    function closeImageModal() {
-      const modal = document.getElementById('imageModal');
-      modal.style.display = 'none';
-      document.body.style.overflow = 'auto'; // Восстанавливаем скролл
-    }
-    
-    // Инициализация увеличения изображений
-    document.addEventListener('DOMContentLoaded', initImageZoom);
     
     // Мини-игра "Хоккейные броски белок"
     let gameState = {

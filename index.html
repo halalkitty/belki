@@ -1,690 +1,685 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <title>Elite Squirrels — Hockey Squirrels, Stats and Transactions</title>
-  
-  <!-- Favicon для разных устройств -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
-  <link rel="manifest" href="site.webmanifest">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  
-  <style>
-    * {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      background-color: #1a2f48; 
-      gap: 20px;
-      box-sizing: border-box;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
-      position: relative;
-    }
-    
-    img {
-      max-width: 90%;
-      max-height: 40vh;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-    }
-    
-    video {
-      max-width: 90%;
-      max-height: 40vh;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-    }
-    
-    .top-left {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      width: 35vw;
-      min-width: 140px;
-      max-width: 300px;
-      height: auto;
-      z-index: 1000;
-    }
-    
-    .telegram-link {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #0088cc;
-      color: white;
-      padding: 12px 16px;
-      border-radius: 25px;
-      text-decoration: none;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
-      z-index: 1000;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-    }
-    
-    .telegram-link:hover,
-    .telegram-link:active {
-      background: #006ba6;
-    }
-    
-    .telegram-icon {
-      width: 18px;
-      height: 18px;
-      fill: white;
-      flex-shrink: 0;
-    }
-    
-    /* Стили для кнопок */
-    .game-button {
-      background: linear-gradient(45deg, #ff6b35, #f7931e);
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-      font-family: Arial, sans-serif;
-    }
-    
-    .contract-button {
-      background: linear-gradient(45deg, #228B22, #32CD32);
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-      font-family: Arial, sans-serif;
-    }
-    
-    .game-button:hover,
-    .contract-button:hover {
-      transform: scale(1.05);
-    }
-    
-    /* Эффект падающих долларов */
-    .dollar {
-      position: fixed;
-      font-size: 30px;
-      color: #228B22;
-      pointer-events: none;
-      z-index: 1500;
-      animation: fallDown 3s linear forwards;
-    }
-    
-    @keyframes fallDown {
-      0% {
-        transform: translateY(-50px) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-    
-    /* iOS Safari specific optimizations */
-    @supports (-webkit-appearance: none) {
-      body {
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
-        padding-left: env(safe-area-inset-left);
-        padding-right: env(safe-area-inset-right);
-      }
-      
-      .top-left {
-        top: calc(10px + env(safe-area-inset-top));
-        left: calc(10px + env(safe-area-inset-left));
-      }
-      
-      .telegram-link {
-        bottom: calc(20px + env(safe-area-inset-bottom));
-        left: calc(20px + env(safe-area-inset-left));
-      }
-    }
-    
-    /* Media queries for better responsive design */
-    @media screen and (max-width: 768px) {
-      body {
-        gap: 15px;
-        padding: 15px;
-      }
-      
-      .top-left {
-        width: 30vw;
-        min-width: 100px;
-        max-width: 200px;
-      }
-      
-      .telegram-link {
-        font-size: 12px;
-        padding: 10px 14px;
-      }
-      
-      .telegram-icon {
-        width: 16px;
-        height: 16px;
-      }
-      
-      img, video {
-        max-height: 35vh;
-      }
-      
-      .game-button,
-      .contract-button {
-        font-size: 14px;
-        padding: 12px 24px;
-      }
-      
-      /* Мобильная адаптация для контейнера с картинками */
-      div[style*="display: flex"] {
-        flex-direction: column !important;
-        gap: 15px !important;
-      }
-    }
-    
-    @media screen and (max-width: 480px) {
-      .top-left {
-        width: 28vw;
-        min-width: 90px;
-        max-width: 180px;
-      }
-      
-      .telegram-link {
-        font-size: 11px;
-        padding: 8px 12px;
-        gap: 6px;
-      }
-      
-      .telegram-icon {
-        width: 14px;
-        height: 14px;
-      }
-      
-      .game-button,
-      .contract-button {
-        font-size: 12px;
-        padding: 10px 20px;
-      }
-    }
-    
-    /* Стили для мини-игры */
-    #gameContainer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-    }
-    
-    #gameArea {
-      position: relative;
-      width: 400px;
-      height: 200px;
-      background: linear-gradient(90deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
-      border: 3px solid #333;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-    
-    #puck {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: #1a1a1a;
-      border-radius: 50%;
-      bottom: 20px;
-      left: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid #333;
-    }
-    
-    #goal {
-      position: absolute;
-      width: 60px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.2);
-      border: 3px solid #ff0000;
-      border-bottom: none;
-      right: 10px;
-      bottom: 80px;
-      border-radius: 10px 10px 0 0;
-    }
-    
-    #goal::after {
-      content: '🥅';
-      font-size: 24px;
-      position: absolute;
-      top: 5px;
-      left: 18px;
-    }
-    
-    #player {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      bottom: 15px;
-      left: 15px;
-      font-size: 24px;
-    }
-    
-    #player::after {
-      content: '🐿️';
-    }
-    
-    #gameUI {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-    }
-    
-    #gameUI button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    #startBtn {
-      background: #4CAF50;
-      color: white;
-    }
-    
-    #startBtn:hover {
-      background: #45a049;
-    }
-    
-    #closeBtn {
-      background: #f44336;
-      color: white;
-    }
-    
-    #closeBtn:hover {
-      background: #da190b;
-    }
-    
-    .puck-moving {
-      animation: puckShot 1s ease-out forwards;
-    }
-    
-    @keyframes puckShot {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-      100% {
-        transform: translate(320px, -50px) scale(0.8);
-      }
-    }
-    
-    .goal-animation {
-      animation: goalCelebration 0.5s ease-in-out;
-    }
-    
-    @keyframes goalCelebration {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); background: #ffff00; }
-    }
-    
-    @media screen and (max-width: 480px) {
-      #gameArea {
-        width: 90vw;
-        height: 180px;
-      }
-      
-      #gameUI {
-        flex-direction: column;
-        gap: 10px;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<title>Elite Squirrels — Hockey Squirrels, Stats and Transactions</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#ffffff">
+<style>
+* {
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-webkit-tap-highlight-color: transparent;
+}
+body {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+margin: 0;
+padding: 20px;
+background-color: #1a2f48;
+gap: 20px;
+box-sizing: border-box;
+overflow-x: hidden;
+-webkit-overflow-scrolling: touch;
+position: relative;
+}
+img {
+max-width: 90%;
+max-height: 40vh;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+transform: translateZ(0);
+}
+video {
+max-width: 90%;
+max-height: 40vh;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+transform: translateZ(0);
+}
+.top-left {
+position: fixed;
+top: 10px;
+left: 10px;
+width: 35vw;
+min-width: 140px;
+max-width: 300px;
+height: auto;
+z-index: 1000;
+}
+.telegram-link {
+position: fixed;
+bottom: 20px;
+left: 20px;
+display: flex;
+align-items: center;
+gap: 8px;
+background: #0088cc;
+color: white;
+padding: 12px 16px;
+border-radius: 25px;
+text-decoration: none;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+font-size: 14px;
+font-weight: 500;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+transition: background-color 0.3s ease;
+z-index: 1000;
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+transform: translateZ(0);
+}
+.telegram-link:hover,
+.telegram-link:active {
+background: #006ba6;
+}
+.telegram-icon {
+width: 18px;
+height: 18px;
+fill: white;
+flex-shrink: 0;
+}
+/* Стили для кнопок */
+.game-button {
+background: linear-gradient(45deg, #ff6b35, #f7931e);
+color: white;
+border: none;
+padding: 15px 30px;
+border-radius: 25px;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+transition: transform 0.2s;
+font-family: Arial, sans-serif;
+}
+.contract-button {
+background: linear-gradient(45deg, #228B22, #32CD32);
+color: white;
+border: none;
+padding: 15px 30px;
+border-radius: 25px;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+transition: transform 0.2s;
+font-family: Arial, sans-serif;
+}
+.game-button:hover,
+.contract-button:hover {
+transform: scale(1.05);
+}
+/* Эффект падающих долларов - улучшенная анимация */
+.dollar {
+position: fixed;
+font-size: 30px;
+color: #228B22;
+pointer-events: none;
+z-index: 1500;
+animation-timing-function: linear;
+animation-fill-mode: forwards;
+}
+
+/* Разные траектории для долларов */
+@keyframes fallDown1 {
+0% {
+transform: translateY(-50px) translateX(0) rotate(0deg);
+opacity: 1;
+}
+100% {
+transform: translateY(100vh) translateX(100px) rotate(360deg);
+opacity: 0;
+}
+}
+
+@keyframes fallDown2 {
+0% {
+transform: translateY(-50px) translateX(0) rotate(0deg);
+opacity: 1;
+}
+100% {
+transform: translateY(100vh) translateX(-150px) rotate(-360deg);
+opacity: 0;
+}
+}
+
+@keyframes fallDown3 {
+0% {
+transform: translateY(-50px) translateX(0) rotate(0deg);
+opacity: 1;
+}
+100% {
+transform: translateY(100vh) translateX(200px) rotate(540deg);
+opacity: 0;
+}
+}
+
+@keyframes fallDown4 {
+0% {
+transform: translateY(-50px) translateX(0) rotate(0deg);
+opacity: 1;
+}
+100% {
+transform: translateY(100vh) translateX(-250px) rotate(-540deg);
+opacity: 0;
+}
+}
+
+@keyframes fallDown5 {
+0% {
+transform: translateY(-50px) translateX(0) rotate(0deg);
+opacity: 1;
+}
+100% {
+transform: translateY(100vh) translateX(300px) rotate(720deg);
+opacity: 0;
+}
+}
+
+/* iOS Safari specific optimizations */
+@supports (-webkit-appearance: none) {
+body {
+padding-top: env(safe-area-inset-top);
+padding-bottom: env(safe-area-inset-bottom);
+padding-left: env(safe-area-inset-left);
+padding-right: env(safe-area-inset-right);
+}
+.top-left {
+top: calc(10px + env(safe-area-inset-top));
+left: calc(10px + env(safe-area-inset-left));
+}
+.telegram-link {
+bottom: calc(20px + env(safe-area-inset-bottom));
+left: calc(20px + env(safe-area-inset-left));
+}
+}
+/* Media queries for better responsive design */
+@media screen and (max-width: 768px) {
+body {
+gap: 15px;
+padding: 15px;
+}
+.top-left {
+width: 30vw;
+min-width: 100px;
+max-width: 200px;
+}
+.telegram-link {
+font-size: 12px;
+padding: 10px 14px;
+}
+.telegram-icon {
+width: 16px;
+height: 16px;
+}
+img, video {
+max-height: 35vh;
+}
+.game-button,
+.contract-button {
+font-size: 14px;
+padding: 12px 24px;
+}
+/* Мобильная адаптация для контейнера с картинками */
+div[style*="display: flex"] {
+flex-direction: column !important;
+gap: 15px !important;
+}
+}
+@media screen and (max-width: 480px) {
+.top-left {
+width: 28vw;
+min-width: 90px;
+max-width: 180px;
+}
+.telegram-link {
+font-size: 11px;
+padding: 8px 12px;
+gap: 6px;
+}
+.telegram-icon {
+width: 14px;
+height: 14px;
+}
+.game-button,
+.contract-button {
+font-size: 12px;
+padding: 10px 20px;
+}
+}
+/* Стили для мини-игры */
+#gameContainer {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.9);
+z-index: 2000;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 20px;
+}
+#gameArea {
+position: relative;
+width: 400px;
+height: 200px;
+background: linear-gradient(90deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
+border: 3px solid #333;
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+#puck {
+position: absolute;
+width: 20px;
+height: 20px;
+background: #1a1a1a;
+border-radius: 50%;
+bottom: 20px;
+left: 50px;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid #333;
+}
+#goal {
+position: absolute;
+width: 60px;
+height: 40px;
+background: rgba(255, 255, 255, 0.2);
+border: 3px solid #ff0000;
+border-bottom: none;
+right: 10px;
+bottom: 80px;
+border-radius: 10px 10px 0 0;
+}
+#goal::after {
+content: '🥅';
+font-size: 24px;
+position: absolute;
+top: 5px;
+left: 18px;
+}
+#player {
+position: absolute;
+width: 30px;
+height: 30px;
+bottom: 15px;
+left: 15px;
+font-size: 24px;
+}
+#player::after {
+content: '🐿️';
+}
+#gameUI {
+display: flex;
+gap: 20px;
+align-items: center;
+font-family: Arial, sans-serif;
+color: white;
+font-size: 18px;
+font-weight: bold;
+}
+#gameUI button {
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+font-size: 14px;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.2s;
+}
+#startBtn {
+background: #4CAF50;
+color: white;
+}
+#startBtn:hover {
+background: #45a049;
+}
+#closeBtn {
+background: #f44336;
+color: white;
+}
+#closeBtn:hover {
+background: #da190b;
+}
+.puck-moving {
+animation: puckShot 1s ease-out forwards;
+}
+@keyframes puckShot {
+0% {
+transform: translate(0, 0) scale(1);
+}
+100% {
+transform: translate(320px, -50px) scale(0.8);
+}
+}
+.goal-animation {
+animation: goalCelebration 0.5s ease-in-out;
+}
+@keyframes goalCelebration {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.2); background: #ffff00; }
+}
+@media screen and (max-width: 480px) {
+#gameArea {
+width: 90vw;
+height: 180px;
+}
+#gameUI {
+flex-direction: column;
+gap: 10px;
+}
+}
+</style>
 </head>
 <body>
-  <img class="top-left" src="top-left-image.png" alt="Top Left Image" />
-  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="telegram-link" target="_blank">
-    <svg class="telegram-icon" viewBox="0 0 24 24">
-      <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 2.1 11.75c-1.21-.35-1.23-1.18.26-1.75l21.26-8.2c.97-.43 1.9.24 1.48 1.75L21.3 21.75c-.18.97-.78 1.22-1.57.75L14.26 19l-2.74 2.64c-.29.32-.53.15-.53-.34z"/>
-    </svg>
-    Telegram канал
-  </a>
-  <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center;">
-    <img src="belka.jpg" alt="belka" />
-    <img src="stat.png" alt="Player Statistics" style="
-      max-width: 90%;
-      max-height: 40vh;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-    " />
-  </div>
-  
-  <!-- Мини-игра "Хоккейные броски" -->
-  <div id="gameContainer" style="display: none;">
-    <h2 style="text-align: center; font-family: Arial, sans-serif; color: #fff;">🏒 Хоккейные броски белок 🐿️</h2>
-    <div id="gameArea">
-      <div id="puck"></div>
-      <div id="goal"></div>
-      <div id="player"></div>
-    </div>
-    <div id="gameUI">
-      <div id="score">Счет: 0</div>
-      <div id="timer">Время: 30</div>
-      <button id="startBtn">Начать игру</button>
-      <button id="closeBtn">Закрыть игру</button>
-    </div>
-  </div>
-  
-  <!-- Кнопки -->
-  <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-    <button id="playGameBtn" class="game-button">
-      🎮 Играть в мини-игру
-    </button>
-    
-    <button id="contractBtn" class="contract-button">
-      💰 Подписать контракт на 65 млн
-    </button>
-  </div>
+<img class="top-left" src="top-left-image.png" alt="Top Left Image" />
+<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="telegram-link" target="_blank">
+<svg class="telegram-icon" viewBox="0 0 24 24">
+<path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 2.1 11.75c-1.21-.35-1.23-1.18.26-1.75l21.26-8.2c.97-.43 1.9.24 1.48 1.75L21.3 21.75c-.18.97-.78 1.22-1.57.75L14.26 19l-2.74 2.64c-.29.32-.53.15-.53-.34z"/>
+</svg>
+Telegram канал
+</a>
+<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center;">
+<img src="belka.jpg" alt="belka" />
+<img src="stat.png" alt="Player Statistics" style="
+max-width: 90%;
+max-height: 40vh;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+transform: translateZ(0);
+" />
+</div>
+<div id="gameContainer" style="display: none;">
+<h2 style="text-align: center; font-family: Arial, sans-serif; color: #fff;">🏒 Хоккейные броски белок 🐿️</h2>
+<div id="gameArea">
+<div id="puck"></div>
+<div id="goal"></div>
+<div id="player"></div>
+</div>
+<div id="gameUI">
+<div id="score">Счет: 0</div>
+<div id="timer">Время: 30</div>
+<button id="startBtn">Начать игру</button>
+<button id="closeBtn">Закрыть игру</button>
+</div>
+</div>
+<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+<button id="playGameBtn" class="game-button">
+🎮 Играть в мини-игру
+</button>
+<button id="contractBtn" class="contract-button">
+💰 Подписать контракт на 65 млн
+</button>
+</div>
+<video
+id="mainVideo"
+playsinline
+webkit-playsinline
+controls
+preload="auto"
+muted
+x-webkit-airplay="allow"
+webkit-playsinline="true">
+<source src="vyst.mp4" type="video/mp4" />
+Ваш браузер не поддерживает просмотр видео.
+</video>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+const video = document.getElementById('mainVideo');
+// Принудительная загрузка для Safari
+video.load();
+// Обработка ошибок
+video.addEventListener('error', function(e) {
+console.log('Video error:', e);
+console.log('Video error code:', video.error ? video.error.code : 'unknown');
+});
+// Попытка загрузить метаданные
+video.addEventListener('loadedmetadata', function() {
+console.log('Video metadata loaded');
+});
+// Дополнительная попытка загрузки через 1 секунду
+setTimeout(function() {
+if (video.readyState === 0) {
+video.load();
+}
+}, 1000);
+// Для iOS Safari - попытка воспроизведения при первом касании
+document.addEventListener('touchstart', function() {
+if (video.paused) {
+video.play().catch(function(error) {
+console.log('Play error:', error);
+});
+}
+}, { once: true });
+});
 
-  <video 
-    id="mainVideo"
-    playsinline
-    webkit-playsinline
-    controls
-    preload="auto"
-    muted
-    x-webkit-airplay="allow"
-    webkit-playsinline="true">
-    <source src="vyst.mp4" type="video/mp4" />
-    Ваш браузер не поддерживает просмотр видео.
-  </video>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const video = document.getElementById('mainVideo');
-      
-      // Принудительная загрузка для Safari
-      video.load();
-      
-      // Обработка ошибок
-      video.addEventListener('error', function(e) {
-        console.log('Video error:', e);
-        console.log('Video error code:', video.error ? video.error.code : 'unknown');
-      });
-      
-      // Попытка загрузить метаданные
-      video.addEventListener('loadedmetadata', function() {
-        console.log('Video metadata loaded');
-      });
-      
-      // Дополнительная попытка загрузки через 1 секунду
-      setTimeout(function() {
-        if (video.readyState === 0) {
-          video.load();
-        }
-      }, 1000);
-      
-      // Для iOS Safari - попытка воспроизведения при первом касании
-      document.addEventListener('touchstart', function() {
-        if (video.paused) {
-          video.play().catch(function(error) {
-            console.log('Play error:', error);
-          });
-        }
-      }, { once: true });
-    });
-    
-    // Функция создания падающих долларов
-    function createFallingDollars() {
-      const dollarSymbols = ['💵', '💸', '💰', '🤑'];
-      const numberOfDollars = 30;
-      
-      for (let i = 0; i < numberOfDollars; i++) {
-        setTimeout(() => {
-          const dollar = document.createElement('div');
-          dollar.className = 'dollar';
-          dollar.textContent = dollarSymbols[Math.floor(Math.random() * dollarSymbols.length)];
-          
-          // Случайная позиция по горизонтали
-          dollar.style.left = Math.random() * window.innerWidth + 'px';
-          
-          // Случайная задержка анимации
-          dollar.style.animationDelay = Math.random() * 0.5 + 's';
-          
-          document.body.appendChild(dollar);
-          
-          // Удаляем элемент после анимации
-          setTimeout(() => {
-            if (dollar.parentNode) {
-              dollar.parentNode.removeChild(dollar);
-            }
-          }, 3500);
-        }, i * 100);
-      }
-    }
-    
-    // Обработчик кнопки контракта
-    document.getElementById('contractBtn').addEventListener('click', function() {
-      createFallingDollars();
-      
-      // Показываем сообщение через небольшую задержку
-      setTimeout(() => {
-        alert('🎉 Поздравляем! Контракт на 65 миллионов долларов подписан! 💰\nДобро пожаловать в команду Elite Squirrels! 🐿️🏒');
-      }, 500);
-    });
-    
-    // Мини-игра "Хоккейные броски белок"
-    let gameState = {
-      score: 0,
-      timeLeft: 30,
-      gameActive: false,
-      gameTimer: null
-    };
-    
-    const gameContainer = document.getElementById('gameContainer');
-    const playGameBtn = document.getElementById('playGameBtn');
-    const startBtn = document.getElementById('startBtn');
-    const closeBtn = document.getElementById('closeBtn');
-    const puck = document.getElementById('puck');
-    const goal = document.getElementById('goal');
-    const scoreDisplay = document.getElementById('score');
-    const timerDisplay = document.getElementById('timer');
-    
-    // Открыть игру
-    playGameBtn.addEventListener('click', function() {
-      gameContainer.style.display = 'flex';
-    });
-    
-    // Закрыть игру
-    closeBtn.addEventListener('click', function() {
-      gameContainer.style.display = 'none';
-      endGame();
-    });
-    
-    // Начать игру
-    startBtn.addEventListener('click', function() {
-      if (!gameState.gameActive) {
-        startGame();
-      }
-    });
-    
-    // Бросок шайбы
-    puck.addEventListener('click', function() {
-      if (gameState.gameActive && !puck.classList.contains('puck-moving')) {
-        shootPuck();
-      }
-    });
-    
-    function startGame() {
-      gameState.score = 0;
-      gameState.timeLeft = 30;
-      gameState.gameActive = true;
-      
-      updateDisplay();
-      startBtn.textContent = 'Игра идет...';
-      startBtn.disabled = true;
-      
-      // Таймер игры
-      gameState.gameTimer = setInterval(function() {
-        gameState.timeLeft--;
-        updateDisplay();
-        
-        if (gameState.timeLeft <= 0) {
-          endGame();
-        }
-      }, 1000);
-      
-      resetPuck();
-    }
-    
-    function endGame() {
-      gameState.gameActive = false;
-      clearInterval(gameState.gameTimer);
-      startBtn.textContent = 'Начать игру';
-      startBtn.disabled = false;
-      
-      if (gameState.score > 0) {
-        setTimeout(() => {
-          alert(`🎉 Игра окончена! Ваш счет: ${gameState.score} голов!\n${getScoreMessage(gameState.score)}`);
-        }, 100);
-      }
-    }
-    
-    function shootPuck() {
-      puck.classList.add('puck-moving');
-      
-      // Случайность попадания (70% шанс)
-      const hit = Math.random() < 0.7;
-      
-      setTimeout(() => {
-        if (hit) {
-          // Гол!
-          gameState.score++;
-          goal.classList.add('goal-animation');
-          updateDisplay();
-          
-          // Показать эффект гола
-          showGoalEffect();
-          
-          setTimeout(() => {
-            goal.classList.remove('goal-animation');
-          }, 500);
-        }
-        
-        // Вернуть шайбу обратно
-        setTimeout(() => {
-          resetPuck();
-        }, 200);
-        
-      }, 300);
-    }
-    
-    function resetPuck() {
-      puck.classList.remove('puck-moving');
-      puck.style.left = (Math.random() * 100 + 20) + 'px';
-      puck.style.bottom = (Math.random() * 30 + 15) + 'px';
-    }
-    
-    function updateDisplay() {
-      scoreDisplay.textContent = `Счет: ${gameState.score}`;
-      timerDisplay.textContent = `Время: ${gameState.timeLeft}`;
-    }
-    
-    function showGoalEffect() {
-      const effect = document.createElement('div');
-      effect.textContent = '⚡ ГОЛ! ⚡';
-      effect.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #ffff00;
-        font-size: 24px;
-        font-weight: bold;
-        z-index: 1000;
-        animation: goalText 1s ease-out forwards;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-      `;
-      
-      // Добавляем CSS анимацию
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes goalText {
-          0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-          100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-        }
-      `;
-      document.head.appendChild(style);
-      
-      document.getElementById('gameArea').appendChild(effect);
-      
-      setTimeout(() => {
-        effect.remove();
-      }, 1000);
-    }
-    
-    function getScoreMessage(score) {
-      if (score >= 15) return "🏆 Невероятно! Вы настоящий снайпер!";
-      if (score >= 10) return "🥇 Отлично! Отличная игра!";
-      if (score >= 5) return "🥈 Хорошо! Неплохой результат!";
-      if (score >= 1) return "🥉 Неплохо! Есть куда расти!";
-      return "😅 Не расстраивайтесь, попробуйте еще раз!";
-    }
-  </script>
+// Функция создания падающих долларов - улучшенная
+function createFallingDollars() {
+const dollarSymbols = ['💵', '💸', '💰', '🤑', '💲', '💴', '💶', '💷', '💹'];
+const numberOfDollars = 100; // Увеличили количество долларов
+const animations = ['fallDown1', 'fallDown2', 'fallDown3', 'fallDown4', 'fallDown5'];
+const sizes = [24, 30, 36, 42, 48, 54, 60]; // Разные размеры
+const speeds = [2, 2.5, 3, 3.5, 4]; // Разные скорости
+
+for (let i = 0; i < numberOfDollars; i++) {
+setTimeout(() => {
+const dollar = document.createElement('div');
+dollar.className = 'dollar';
+dollar.textContent = dollarSymbols[Math.floor(Math.random() * dollarSymbols.length)];
+dollar.style.zIndex = '1500';
+
+// Случайная позиция по горизонтали
+dollar.style.left = Math.random() * window.innerWidth + 'px';
+
+// Случайный размер
+dollar.style.fontSize = sizes[Math.floor(Math.random() * sizes.length)] + 'px';
+
+// Случайная анимация
+const anim = animations[Math.floor(Math.random() * animations.length)];
+dollar.style.animationName = anim;
+dollar.style.animationDuration = speeds[Math.floor(Math.random() * speeds.length)] + 's';
+
+// Случайная задержка анимации
+dollar.style.animationDelay = Math.random() * 0.5 + 's';
+
+// Случайный цветовой оттенок
+const greenShade = Math.floor(Math.random() * 50 + 150);
+dollar.style.color = `rgb(0, ${greenShade}, 0)`;
+dollar.style.textShadow = '0 0 8px rgba(255,255,255,0.7)';
+
+document.body.appendChild(dollar);
+
+// Удаляем элемент после анимации
+setTimeout(() => {
+if (dollar.parentNode) {
+dollar.parentNode.removeChild(dollar);
+}
+}, 4000);
+}, i * 50); // Уменьшили интервал для более плотного потока
+}
+}
+
+// Обработчик кнопки контракта
+document.getElementById('contractBtn').addEventListener('click', function() {
+// Создаем эффект долларов без уведомления
+createFallingDollars();
+
+// Дополнительный эффект - звук денег (если нужно)
+try {
+const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-money-bag-drop-1996.mp3');
+audio.volume = 0.3;
+audio.play().catch(e => console.log('Audio play error:', e));
+} catch (e) {
+console.log('Audio error:', e);
+}
+});
+
+// Мини-игра "Хоккейные броски белок"
+let gameState = {
+score: 0,
+timeLeft: 30,
+gameActive: false,
+gameTimer: null
+};
+const gameContainer = document.getElementById('gameContainer');
+const playGameBtn = document.getElementById('playGameBtn');
+const startBtn = document.getElementById('startBtn');
+const closeBtn = document.getElementById('closeBtn');
+const puck = document.getElementById('puck');
+const goal = document.getElementById('goal');
+const scoreDisplay = document.getElementById('score');
+const timerDisplay = document.getElementById('timer');
+
+// Открыть игру
+playGameBtn.addEventListener('click', function() {
+gameContainer.style.display = 'flex';
+});
+
+// Закрыть игру
+closeBtn.addEventListener('click', function() {
+gameContainer.style.display = 'none';
+endGame();
+});
+
+// Начать игру
+startBtn.addEventListener('click', function() {
+if (!gameState.gameActive) {
+startGame();
+}
+});
+
+// Бросок шайбы
+puck.addEventListener('click', function() {
+if (gameState.gameActive && !puck.classList.contains('puck-moving')) {
+shootPuck();
+}
+});
+
+function startGame() {
+gameState.score = 0;
+gameState.timeLeft = 30;
+gameState.gameActive = true;
+updateDisplay();
+startBtn.textContent = 'Игра идет...';
+startBtn.disabled = true;
+// Таймер игры
+gameState.gameTimer = setInterval(function() {
+gameState.timeLeft--;
+updateDisplay();
+if (gameState.timeLeft <= 0) {
+endGame();
+}
+}, 1000);
+resetPuck();
+}
+
+function endGame() {
+gameState.gameActive = false;
+clearInterval(gameState.gameTimer);
+startBtn.textContent = 'Начать игру';
+startBtn.disabled = false;
+if (gameState.score > 0) {
+setTimeout(() => {
+alert(`🎉 Игра окончена! Ваш счет: ${gameState.score} голов!\n${getScoreMessage(gameState.score)}`);
+}, 100);
+}
+}
+
+function shootPuck() {
+puck.classList.add('puck-moving');
+// Случайность попадания (70% шанс)
+const hit = Math.random() < 0.7;
+setTimeout(() => {
+if (hit) {
+// Гол!
+gameState.score++;
+goal.classList.add('goal-animation');
+updateDisplay();
+// Показать эффект гола
+showGoalEffect();
+setTimeout(() => {
+goal.classList.remove('goal-animation');
+}, 500);
+}
+// Вернуть шайбу обратно
+setTimeout(() => {
+resetPuck();
+}, 200);
+}, 300);
+}
+
+function resetPuck() {
+puck.classList.remove('puck-moving');
+puck.style.left = (Math.random() * 100 + 20) + 'px';
+puck.style.bottom = (Math.random() * 30 + 15) + 'px';
+}
+
+function updateDisplay() {
+scoreDisplay.textContent = `Счет: ${gameState.score}`;
+timerDisplay.textContent = `Время: ${gameState.timeLeft}`;
+}
+
+function showGoalEffect() {
+const effect = document.createElement('div');
+effect.textContent = '⚡ ГОЛ! ⚡';
+effect.style.cssText = `
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+color: #ffff00;
+font-size: 24px;
+font-weight: bold;
+z-index: 1000;
+animation: goalText 1s ease-out forwards;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+`;
+// Добавляем CSS анимацию
+const style = document.createElement('style');
+style.textContent = `
+@keyframes goalText {
+0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+`;
+document.head.appendChild(style);
+document.getElementById('gameArea').appendChild(effect);
+setTimeout(() => {
+effect.remove();
+}, 1000);
+}
+
+function getScoreMessage(score) {
+if (score >= 15) return "🏆 Невероятно! Вы настоящий снайпер!";
+if (score >= 10) return "🥇 Отлично! Отличная игра!";
+if (score >= 5) return "🥈 Хорошо! Неплохой результат!";
+if (score >= 1) return "🥉 Неплохо! Есть куда расти!";
+return "😅 Не расстраивайтесь, попробуйте еще раз!";
+}
+</script>
 </body>
 </html>

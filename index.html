@@ -123,8 +123,24 @@ box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 transition: transform 0.2s;
 font-family: Arial, sans-serif;
 }
+.highlights-button {
+background: linear-gradient(45deg, #e74c3c, #c0392b);
+color: white;
+border: none;
+padding: 15px 30px;
+border-radius: 25px;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+transition: transform 0.2s;
+font-family: Arial, sans-serif;
+text-decoration: none;
+display: inline-block;
+}
 .game-button:hover,
-.contract-button:hover {
+.contract-button:hover,
+.highlights-button:hover {
 transform: scale(1.05);
 }
 /* Эффект падающих долларов - улучшенная анимация */
@@ -234,7 +250,8 @@ img, video {
 max-height: 35vh;
 }
 .game-button,
-.contract-button {
+.contract-button,
+.highlights-button {
 font-size: 14px;
 padding: 12px 24px;
 }
@@ -260,7 +277,8 @@ width: 14px;
 height: 14px;
 }
 .game-button,
-.contract-button {
+.contract-button,
+.highlights-button {
 font-size: 12px;
 padding: 10px 20px;
 }
@@ -395,7 +413,7 @@ gap: 10px;
 </head>
 <body>
 <img class="top-left" src="top-left-image.png" alt="Top Left Image" />
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="telegram-link" target="_blank">
+<a href="https://t.me/softbrushes" class="telegram-link" target="_blank">
 <svg class="telegram-icon" viewBox="0 0 24 24">
 <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 2.1 11.75c-1.21-.35-1.23-1.18.26-1.75l21.26-8.2c.97-.43 1.9.24 1.48 1.75L21.3 21.75c-.18.97-.78 1.22-1.57.75L14.26 19l-2.74 2.64c-.29.32-.53.15-.53-.34z"/>
 </svg>
@@ -433,6 +451,11 @@ transform: translateZ(0);
 <button id="contractBtn" class="contract-button">
 💰 Подписать контракт на 65 млн
 </button>
+<a href="https://www.youtube.com/watch?v=LGXPmfpwjq4" target="_blank" style="text-decoration: none;">
+<button class="highlights-button">
+🎬 Посмотреть хайлайты
+</button>
+</a>
 </div>
 <video
 id="mainVideo"

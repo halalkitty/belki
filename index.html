@@ -96,36 +96,11 @@ height: 18px;
 fill: white;
 flex-shrink: 0;
 }
-/* Стили для кнопок */
-.game-button {
-background: linear-gradient(45deg, #ff6b35, #f7931e);
-color: white;
-border: none;
-padding: 15px 30px;
-border-radius: 25px;
-font-size: 16px;
-font-weight: bold;
-cursor: pointer;
-box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-transition: transform 0.2s;
-font-family: Arial, sans-serif;
-}
-.contract-button {
-background: linear-gradient(45deg, #228B22, #32CD32);
-color: white;
-border: none;
-padding: 15px 30px;
-border-radius: 25px;
-font-size: 16px;
-font-weight: bold;
-cursor: pointer;
-box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-transition: transform 0.2s;
-font-family: Arial, sans-serif;
-}
+/* Стили для кнопок - унифицированы */
+.game-button,
+.contract-button,
 .highlights-button {
-background: linear-gradient(45deg, #e74c3c, #c0392b);
-color: white;
+display: inline-block;
 border: none;
 padding: 15px 30px;
 border-radius: 25px;
@@ -136,13 +111,29 @@ box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 transition: transform 0.2s;
 font-family: Arial, sans-serif;
 text-decoration: none;
-display: inline-block;
+text-align: center;
+white-space: nowrap;
+color: white;
+min-width: 200px; /* Добавляем минимальную ширину */
+box-sizing: border-box;
 }
+
+.game-button {
+background: linear-gradient(45deg, #ff6b35, #f7931e);
+}
+.contract-button {
+background: linear-gradient(45deg, #228B22, #32CD32);
+}
+.highlights-button {
+background: linear-gradient(45deg, #e74c3c, #c0392b);
+}
+
 .game-button:hover,
 .contract-button:hover,
 .highlights-button:hover {
 transform: scale(1.05);
 }
+
 /* Эффект падающих долларов - улучшенная анимация */
 .dollar {
 position: fixed;
@@ -254,6 +245,7 @@ max-height: 35vh;
 .highlights-button {
 font-size: 14px;
 padding: 12px 24px;
+min-width: 180px; /* Уменьшаем для мобильных */
 }
 /* Мобильная адаптация для контейнера с картинками */
 div[style*="display: flex"] {
@@ -263,6 +255,7 @@ gap: 15px !important;
 /* Исключение для контейнера с кнопками */
 .buttons-container {
 flex-direction: row !important;
+flex-wrap: wrap !important;
 }
 }
 @media screen and (max-width: 480px) {
@@ -285,6 +278,12 @@ height: 14px;
 .highlights-button {
 font-size: 12px;
 padding: 10px 20px;
+min-width: 160px; /* Еще меньше для очень маленьких экранов */
+width: 100%; /* На очень маленьких экранах кнопки занимают всю ширину */
+}
+.buttons-container {
+flex-direction: column !important;
+width: 100%;
 }
 }
 /* Стили для мини-игры */
@@ -455,10 +454,8 @@ transform: translateZ(0);
 <button id="contractBtn" class="contract-button">
 💰 Подписать контракт на 65 млн
 </button>
-<a href="https://www.youtube.com/watch?v=LGXPmfpwjq4" target="_blank" style="text-decoration: none;">
-<button class="highlights-button">
+<a href="https://www.youtube.com/watch?v=LGXPmfpwjq4" target="_blank" class="highlights-button">
 🎬 Посмотреть хайлайты
-</button>
 </a>
 </div>
 <video
